@@ -41,8 +41,10 @@ class MDP:
             self.current_state = start_state;
 
     def receive_action(self, action): ##return is_terminal,state, reward
-        key = '%d_%s'%(self.current_state, action); 
-        self.current_state = t[key];
+        key = '%d_%s'%(self.current_state, action);
+        if key in t: 
+            self.current_state = t[key]; 
+
 
         is_terminal = False;
         if 6 == self.current_state or \
