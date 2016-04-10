@@ -57,5 +57,12 @@ if __name__ == "__main__":
         grid_mdp     = Grid_Mdp()
         policy_value = Policy_Value(grid_mdp)
         policy_value.policy_iterate(grid_mdp)
-        print policy_value.pi
-        print policy_value.v 
+        print "value:"
+        for i in xrange(1,6):
+            print "%d:%f\t"%(i,policy_value.v[i]),
+        print ""
+ 
+        print "policy:"
+        for i in xrange(1,6):
+            print "%d->%s\t"%(i,policy_value.pi[i]),
+        print ""
