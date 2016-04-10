@@ -2,7 +2,7 @@
 import numpy;
 import random;
 
-class Mdp:
+class Grid_Mdp:
 
     def __init__(self):
 

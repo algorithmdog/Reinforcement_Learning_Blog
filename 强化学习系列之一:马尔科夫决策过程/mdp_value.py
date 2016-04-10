@@ -16,19 +16,20 @@ def compute_random_pi_state_value():
 
     for k in xrange(1,num):
         for i in xrange(1,6):       
-            mdp = MDP(i);
+            mdp = Mdp();
+            s   = i;
             is_terminal = False
             gamma = 1.0
             v     = 0.0
             while False == is_terminal:
                 a                 = random_pi()
-                is_terminal, s, r = mdp.receive_action(a)
-                v         += gamma * r;
+                is_terminal, s, r = mdp.transform(s, a)
+                v                += gamma * r;
                 gamma            *= 0.5
   
             value[i] = (value[i] * (k-1) + v) / k
 
-        if k % 1000 == 0:
+        if k % 10000 == 0:
             print value
 
     print value
