@@ -66,3 +66,31 @@ class Grid_Mdp:
             r = self.rewards[key];
            
         return is_terminal, next_state, r;
+
+
+
+
+    def gen_randompi_sample(self, num):
+        state_sample  = [];
+        action_sample = [];
+        reward_sample = [];
+        for i in xrange(num):
+                s_tmp = []
+                a_tmp = []
+                r_tmp = []
+
+                s = self.states[int(random.random() * len(self.states))]
+                t = False
+                while False == t:
+                    a = self.actions[int(random.random() * len(self.actions))]
+                    t, s1, r  = self.transform(s,a)
+                    s_tmp.append(s)
+                    r_tmp.append(r)
+                    a_tmp.append(a)
+                    s = s1            
+                state_sample.append(s_tmp)
+                reward_sample.append(r_tmp)
+                action_sample.append(a_tmp)
+
+        return state_sample, action_sample, reward_sample
+
