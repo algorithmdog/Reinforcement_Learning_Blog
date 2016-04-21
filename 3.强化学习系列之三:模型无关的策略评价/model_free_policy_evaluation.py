@@ -41,7 +41,7 @@ def mc(gamma, state_sample, action_sample, reward_sample):
 def td(alpha, gamma, state_sample, action_sample, reward_sample):
     vfunc = dict()
     for s in states:
-        vfunc[s] = 0.0           
+        vfunc[s] = random.random()         
  
     for iter1 in xrange(len(state_sample)):
         for step in xrange(len(state_sample[iter1])):
@@ -64,11 +64,11 @@ def td(alpha, gamma, state_sample, action_sample, reward_sample):
 
 
 if __name__ == "__main__":
-    s, a, r = grid.gen_randompi_sample(5)
-    print s
-    print a
-    print r
+    #s, a, r = grid.gen_randompi_sample(5)
+    #print s
+    #print a
+    #print r
 
-    s, a, r = grid.gen_randompi_sample(1000)
+    s, a, r = grid.gen_randompi_sample(100)
     mc(0.5, s, a, r)
-    td(0.02, 0.5, s, a, r)
+    td(0.15, 0.5, s, a, r)
