@@ -10,9 +10,10 @@ actions  = grid.getActions();
 gamma    = grid.getGamma();
 qfunc    = dict();
 
-
 ###############   Compute the gaps between current q and the best q ######
-best = dict();
+best        = dict();
+result_file = open("result_file.txt", "w")
+
 def read_best():
     f = open("best_qfunc")
     for line in f:
@@ -27,6 +28,7 @@ def compute_error():
         error = qfunc[key] - best[key]
         sum1 += error * error
     return sum1
+
 
 
 ##############   epsilon greedy policy #####
@@ -56,10 +58,12 @@ def epsilon_greedy(state, epsilon):
         if s >= r: return actions[i]
     return actions[len(actions)-1]
 
-
-
 ################ Different model free RL learning algorithms #####
-def mc(epsilon):
+
+def mc(num_iter1, epsilon):
+
+    result_file.write("mc\tnum_iter1=%d\tepsilon=%f\n"%\
+                      (num_iter1, epsilon));
 
     n = dict();
     for s in states:
@@ -67,7 +71,9 @@ def mc(epsilon):
             qfunc["%d_%s"%(s,a)] = 0.0
             n["%d_%s"%(s,a)] = 0.001
 
-    for iter1 in xrange(1000):
+    for iter1 in xrange(num_iter1):
+        result_file.write("%d:%f\n"%(iter1, compute_error()))        
+
         s_sample = []
         a_sample = []
         r_sample = []   
@@ -96,21 +102,17 @@ def mc(epsilon):
             g /= gamma;
 
 
-
-    print ""
-    print "mc"
-    for s in states:
-        for a in actions:
-            print "%d_%s:%f"%(s,a,qfunc["%d_%s"%(s,a)]);
-
-
-def sarsa(alpha, epsilon):
+def sarsa(num_iter1, alpha, epsilon):
     for s in states:
         for a in actions:
             key = "%d_%s"%(s,a)
             qfunc[key] = 0.0
 
-    for iter1 in xrange(1000):
+    result_file.write("sarsa\tnum_iter1=%d\talpha=%f\tepsilon=%f\n"%\
+                      (num_iter1, alpha, epsilon));
+    for iter1 in xrange(num_iter1):
+        result_file.write("%d:%f\n"%(iter1, compute_error()))
+
         s = states[int(random.random() * len(states))]
         a = actions[int(random.random() * len(actions))]
         t = False
@@ -124,22 +126,20 @@ def sarsa(alpha, epsilon):
             s           = s1
             a           = a1
 
-    print ""
-    print "sarsa"
-    for s in states:
-        for a in actions:
-            print "%d_%s:%f"%(s,a,qfunc["%d_%s"%(s,a)])
 
 
-
-def qlearning(alpha, epsilon):
+def qlearning(num_iter1, alpha, epsilon):
    
     for s in states:
         for a in actions:
             key = "%d_%s"%(s,a)
             qfunc[key] = 0.0
+    result_file.write("qlearing\tnum_iter1=%d\talpha=%f\tepsilon=%f\n"%\
+                     (num_iter1, alpha, epsilon))
 
-    for iter1 in xrange(1000):
+    for iter1 in xrange(num_iter1):
+        result_file.write("%d:%f\n"%(iter1, compute_error()));        
+
         s = states[int(random.random() * len(states))]
         a = actions[int(random.random() * len(actions))]
         t = False
@@ -160,17 +160,20 @@ def qlearning(alpha, epsilon):
             a           = epsilon_greedy(s1, epsilon)
 
 
-    print ""
-    print "qlearning"
-    for s in states:
-        for a in actions:
-            print "%d_%s:%f"%(s,a,qfunc["%d_%s"%(s,a)])
 
 
 if __name__ == "__main__":
     read_best()
     
+    mc(num_iter1 = 500, epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.1,  epsilon = 0.8); 
+    sarsa(num_iter1 = 500, alpha = 0.15, epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.25, epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.1,  epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.15, epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.25, epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
 
-    mc(epsilon = 0.8);
-    sarsa( 0.1, 0.8); 
-    qlearning( 0.1, 0.8)
