@@ -3,6 +3,8 @@ import sys
 sys.path.append("./secret")
 import grid_mdp
 import random
+random.seed(10)
+import matplotlib.pyplot as plt
 
 grid     = grid_mdp.Grid_Mdp(); 
 states   = grid.getStates();
@@ -12,7 +14,6 @@ qfunc    = dict();
 
 ###############   Compute the gaps between current q and the best q ######
 best        = dict();
-result_file = open("result_file.txt", "w")
 
 def read_best():
     f = open("best_qfunc")
@@ -62,8 +63,9 @@ def epsilon_greedy(state, epsilon):
 
 def mc(num_iter1, epsilon):
 
-    result_file.write("mc\tnum_iter1=%d\tepsilon=%f\n"%\
-                      (num_iter1, epsilon));
+
+    x = []
+    y = []
 
     n = dict();
     for s in states:
@@ -72,7 +74,8 @@ def mc(num_iter1, epsilon):
             n["%d_%s"%(s,a)] = 0.001
 
     for iter1 in xrange(num_iter1):
-        result_file.write("%d:%f\n"%(iter1, compute_error()))        
+        x.append(iter1);
+        y.append(compute_error())
 
         s_sample = []
         a_sample = []
@@ -101,17 +104,21 @@ def mc(num_iter1, epsilon):
             g -= r_sample[i];
             g /= gamma;
 
+    plt.plot(x,y,"-",label="mc epsilon=%2.1f"%(epsilon));
 
 def sarsa(num_iter1, alpha, epsilon):
+    x = []
+    y = []
+
     for s in states:
         for a in actions:
             key = "%d_%s"%(s,a)
             qfunc[key] = 0.0
 
-    result_file.write("sarsa\tnum_iter1=%d\talpha=%f\tepsilon=%f\n"%\
-                      (num_iter1, alpha, epsilon));
     for iter1 in xrange(num_iter1):
-        result_file.write("%d:%f\n"%(iter1, compute_error()))
+
+        x.append(iter1)
+        y.append(compute_error())
 
         s = states[int(random.random() * len(states))]
         a = actions[int(random.random() * len(actions))]
@@ -126,6 +133,7 @@ def sarsa(num_iter1, alpha, epsilon):
             s           = s1
             a           = a1
 
+    plt.plot(x,y,"--",label="sarsa alpha=%2.1f epsilon=%2.1f"%(alpha,epsilon))
 
 
 def qlearning(num_iter1, alpha, epsilon):
@@ -134,11 +142,13 @@ def qlearning(num_iter1, alpha, epsilon):
         for a in actions:
             key = "%d_%s"%(s,a)
             qfunc[key] = 0.0
-    result_file.write("qlearing\tnum_iter1=%d\talpha=%f\tepsilon=%f\n"%\
-                     (num_iter1, alpha, epsilon))
+    x = []
+    y = []
+
 
     for iter1 in xrange(num_iter1):
-        result_file.write("%d:%f\n"%(iter1, compute_error()));        
+        x.append(iter1)
+        y.append(compute_error())
 
         s = states[int(random.random() * len(states))]
         a = actions[int(random.random() * len(actions))]
@@ -158,22 +168,61 @@ def qlearning(num_iter1, alpha, epsilon):
 
             s           = s1
             a           = epsilon_greedy(s1, epsilon)
-
+   
+    plt.plot(x,y,"-.,",label="q alpha=%2.1f epsilon=%2.1f"%(alpha,epsilon))
 
 
 
 if __name__ == "__main__":
     read_best()
+    plt.figure(figsize=(12,6))
     
-    mc(num_iter1 = 500, epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.1,  epsilon = 0.8); 
-    sarsa(num_iter1 = 500, alpha = 0.15, epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.25, epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.1,  epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.15, epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.25, epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
+    '''
+    mc(num_iter1 = 50000, epsilon = 0.7);
+    mc(num_iter1 = 50000, epsilon = 0.7);
+    mc(num_iter1 = 50000, epsilon = 0.8);
+    mc(num_iter1 = 50000, epsilon = 0.8);
+    mc(num_iter1 = 50000, epsilon = 0.9);
+    mc(num_iter1 = 500000, epsilon = 0.9);
+    '''
 
+    '''    
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.7); 
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.9);
+    '''    
+
+    '''
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    '''
+
+    '''    
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0)
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.7);
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.8);
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.9);
+    '''    
+
+    '''
+    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    '''
+
+            
+    mc(num_iter1 = 500, epsilon = 0.8)
+    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
+    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.9);
+    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.9); 
+    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
+    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.9);
+    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.9);
+    
+
+    plt.xlabel("number of iterations")
+    plt.ylabel("square errors")
+    plt.legend()
+    plt.show();
