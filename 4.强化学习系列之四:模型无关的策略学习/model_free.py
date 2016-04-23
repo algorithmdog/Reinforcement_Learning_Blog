@@ -47,9 +47,9 @@ def epsilon_greedy(state, epsilon):
     
     ##probability
     pro = [0.0 for i in xrange(len(actions))]
-    pro[amax] += epsilon
+    pro[amax] += 1- epsilon
     for i in xrange(len(actions)):
-        pro[i] += (1.0-epsilon) / len(actions)
+        pro[i] += epsilon / len(actions)
 
     ##choose
     r = random.random()
@@ -178,48 +178,49 @@ if __name__ == "__main__":
     plt.figure(figsize=(12,6))
     
     '''
-    mc(num_iter1 = 50000, epsilon = 0.7);
-    mc(num_iter1 = 50000, epsilon = 0.7);
-    mc(num_iter1 = 50000, epsilon = 0.8);
-    mc(num_iter1 = 50000, epsilon = 0.8);
-    mc(num_iter1 = 50000, epsilon = 0.9);
-    mc(num_iter1 = 500000, epsilon = 0.9);
+    mc(num_iter1 = 50000, epsilon = 0.3);
+    mc(num_iter1 = 50000, epsilon = 0.3);
+    mc(num_iter1 = 50000, epsilon = 0.2);
+    mc(num_iter1 = 50000, epsilon = 0.2);
+    mc(num_iter1 = 50000, epsilon = 0.1);
+    mc(num_iter1 = 50000, epsilon = 0.1);
     '''
 
     '''    
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.7); 
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.9);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.3); 
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.1);
     '''    
 
     '''
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
-    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
+    sarsa(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
     '''
 
     '''    
-    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0)
-    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.7);
-    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.8);
-    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.9);
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 1)
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.3);
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.2);
+    qlearning(num_iter1 = 5000, alpha = 0.1,  epsilon = 0.1);
     '''    
 
     '''
-    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
-    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.8);
+    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
+    qlearning(num_iter1 = 50000, alpha = 0.1,  epsilon = 0.2);
     '''
 
             
-    mc(num_iter1 = 500, epsilon = 0.8)
-    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
-    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.9);
-    sarsa(num_iter1 = 500, alpha = 0.3,  epsilon = 0.9); 
-    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.8);
-    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.9);
-    qlearning(num_iter1 = 500, alpha = 0.3,  epsilon = 0.9);
+    mc(num_iter1 = 500, epsilon = 0.2)
+    mc(num_iter1 = 500, epsilon = 0.1)
+    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.2);
+    sarsa(num_iter1 = 500, alpha = 0.4,  epsilon = 0.2);
+    sarsa(num_iter1 = 500, alpha = 0.2,  epsilon = 0.1);
+    sarsa(num_iter1 = 500, alpha = 0.4,  epsilon = 0.1); 
+    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.2);
+    qlearning(num_iter1 = 500, alpha = 0.4,  epsilon = 0.2);
+    qlearning(num_iter1 = 500, alpha = 0.2,  epsilon = 0.1);
+    qlearning(num_iter1 = 500, alpha = 0.4,  epsilon = 0.1);
     
 
     plt.xlabel("number of iterations")

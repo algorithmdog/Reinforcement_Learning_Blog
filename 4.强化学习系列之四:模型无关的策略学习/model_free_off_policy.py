@@ -25,9 +25,9 @@ def greedy_pi_q(state, epsilon):
     
     ##probability
     pro = [0.0 for i in xrange(len(actions))]
-    pro[amax] += epsilon
+    pro[amax] += 1 - epsilon
     for i in xrange(len(actions)):
-        pro[i] += (1.0-epsilon) / len(actions)
+        pro[i] += epsilon / len(actions)
 
     ##choose
     r = random.random()
