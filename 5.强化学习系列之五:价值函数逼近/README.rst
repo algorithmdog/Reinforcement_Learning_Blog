@@ -1,5 +1,5 @@
 ======================
-http://www.algorithmdog.com/reinforcement-learning-model-free-learning
+http://www.algorithmdog.com/reinforcement-learning-value-function-approximation
 ======================
 
 Modules
