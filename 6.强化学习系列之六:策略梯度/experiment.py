@@ -4,10 +4,9 @@ sys.path.append("./secret")
 import random
 random.seed(10)
 import matplotlib.pyplot as plt
-from model_free import *
-from policy     import *
-from evaluate   import *
-from grid_mdp   import *
+from gradient         import *
+from policy_value     import *
+from grid_mdp         import *
 
 if __name__ == "__main__":
 
