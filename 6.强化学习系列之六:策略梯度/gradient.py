@@ -9,27 +9,27 @@ random.seed(0)
 import numpy as np
 
 
-def update_value(value, f, a, tvalue, alpha):
-    pvalue        = value.qfunc(f, a);
+def update_valuepolicy(valuepolicy, f, a, tvalue, alpha):
+    pvalue        = valuepolicy.qfunc(f, a);
     error         = pvalue - tvalue; 
-    fea           = value.get_fea_vec(f, a);
-    policy.theta -= alpha * error * fea;     
+    fea           = valuepolicy.get_fea_vec(f, a);
+    valuepolicy.theta -= alpha * error * fea;     
 
-def update_softmaxpolicy(policy, f, a, qvalue, alpha):
+def update_softmaxpolicy(softmaxpolicy, f, a, qvalue, alpha):
 
-    fea  = policy.get_fea_vec(f,a);
-    prob = policy.pi(f);
+    fea  = softmaxpolicy.get_fea_vec(f,a);
+    prob = softmaxpolicy.pi(f);
     
-    delte_logJ = fea;
-    for i in xrange(len(policy.actions)):
-        a1          = policy.actions[i];
-        fea1        = policy.get_fea_vec(f,a1);
+    delta_logJ = fea;
+    for i in xrange(len(softmaxpolicy.actions)):
+        a1          = softmaxpolicy.actions[i];
+        fea1        = softmaxpolicy.get_fea_vec(f,a1);
         delta_logJ -= fea1 * prob[i];
 
-    policy.theta -= alpha * delta_logJ * qvalue; 
+    softmaxpolicy.theta -= alpha * delta_logJ * qvalue; 
 
 ################ Different model free RL learning algorithms #####
-def mc(grid, policy, num_iter1, alpha):
+def mc(grid,softmaxpolicy, num_iter1, alpha):
     actions = grid.actions;
     gamma   = grid.gamma;
     for i in xrange(len(policy.theta)):
@@ -45,7 +45,7 @@ def mc(grid, policy, num_iter1, alpha):
         t = False
         count = 0
         while False == t and count < 100:
-            a = policy.take_action(f)
+            a = softmaxpolicy.take_action(f)
             t, f1, r  = grid.receive(a)
             f_sample.append(f)
             r_sample.append(r)
@@ -60,22 +60,26 @@ def mc(grid, policy, num_iter1, alpha):
             g += r_sample[i];
         
         for i in xrange(len(f_sample)):
-            update_policy(policy, f_sample[i], a_sample[i], g, alpha)
+            update_softmaxpolicy(solftmaxpolicy, f_sample[i], a_sample[i], g, alpha)
 
             g -= r_sample[i];
             g /= gamma;
         
 
-    return policy
+    return softmaxpolicy
 
-def sarsa(grid, policy, value, num_iter1, alpha):
+def sarsa(grid, evaler, softmaxpolicy, valuepolicy, num_iter1, alpha):
     actions = grid.actions;
     gamma   = grid.gamma;
-    for i in xrange(len(policy.theta)):
-        value.theta[i]  = 0.1
-        policy.theta[i] = 0.0;
+    y       = [];
+    for i in xrange(len(valuepolicy.theta)):
+        valuepolicy.theta[i]  = 0.1
+    for i in xrange(len(softmaxpolicy.theta)): 
+        softmaxpolicy.theta[i] = 0.0;
+    
 
     for iter1 in xrange(num_iter1):
+        y.append(evaler.eval(valuepolicy))
         f = grid.start();
         a = actions[int(random.random() * len(actions))]
         t = False
@@ -83,14 +87,14 @@ def sarsa(grid, policy, value, num_iter1, alpha):
 
         while False == t and count < 100:
             t,f1,r      = grid.receive(a)
-            a1          = policy.take_action(f1)
-            update_value(value, f, a, r + gamma * value.qfunc(f1, a1), alpha);
-            update_policy(policy, f, a, value.qfunc(f,a), alpha);
+            a1          = softmaxpolicy.take_action(f1)
+            update_valuepolicy(valuepolicy, f, a, r + gamma * valuepolicy.qfunc(f1, a1), alpha);
+            update_softmaxpolicy(softmaxpolicy, f, a, valuepolicy.qfunc(f,a), alpha);
 
             f           = f1
             a           = a1
             count      += 1
 
-    return policy, y;
+    return softmaxpolicy, y;
 
 

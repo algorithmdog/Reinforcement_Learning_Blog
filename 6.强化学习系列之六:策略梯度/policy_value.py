@@ -35,6 +35,7 @@ class SoftmaxPolicy:
         prob = [ 0.0 for i in xrange(len(self.actions))];
         sum1 = 0.0;
         for i in xrange(len(self.actions)):
+            f = self.get_fea_vec(fea,self.actions[i])
             prob[i] = np.exp(np.dot(f, self.theta));
             sum1 += prob[i];
         for i in xrange(len(self.actions)):
@@ -43,19 +44,19 @@ class SoftmaxPolicy:
         return prob;
 
     def take_action(self, fea):
-        prob = pi(fea);
+        prob = self.pi(fea);
 
         ##choose
         r = random.random()
         s = 0.0
         for i in xrange(len(self.actions)):
-            s += pro[i]
+            s += prob[i]
             if s >= r: return self.actions[i];
         
         return self.actions[len(self.actions)-1];
 
 
-class Value:
+class ValuePolicy:
     def __init__(self, grid, epsilon):
         self.actions = grid.actions
 
