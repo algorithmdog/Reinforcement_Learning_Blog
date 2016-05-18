@@ -25,6 +25,7 @@ def update_softmaxpolicy(softmaxpolicy, f, a, qvalue, alpha):
         a1          = softmaxpolicy.actions[i];
         fea1        = softmaxpolicy.get_fea_vec(f,a1);
         delta_logJ -= fea1 * prob[i];
+    delta_logJ     *= -1.0;
 
     softmaxpolicy.theta -= alpha * delta_logJ * qvalue; 
 
