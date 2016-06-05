@@ -1,18 +1,18 @@
 ======================
-http://www.algorithmdog.com/reinforcement-learning-model-free-learning
+http://www.algorithmdog.com/rl-irl ‎
 ======================
 
 Modules
 ---------------
 1. policy.py is the policy module
 
-2. evaluate.py is the eval module
+2. trajectories is the trajectories module
 
-3. model_free.py contains different algorithm implements
+3. grid_mdp.py is the grid markov decision process module
  
-4. experiment.py are the experiments scripts
+4. apprenticeship_learning.py is the module of apprenticeship learning algorithm
 
- -You can use command "python experiment.py" to reproduce the experiments in the blog
+ -You can use command "python apprenticeship_learning.py" to reproduce the experiment in the blog
 
 Requirements
 ---------------
