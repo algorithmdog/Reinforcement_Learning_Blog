@@ -45,8 +45,6 @@ class Optimal_Epsilon_Policy(Policy):
         else:
             return self.epsilon;
 
-
-
 class Apprenticeship_Policy(Policy):
     def __init__(self, mdp):
         self.states  = mdp.states;
@@ -109,6 +107,17 @@ class Apprenticeship_Policy(Policy):
             self.u += u1;
 
         self.u /= n;
+
+
+class Maxent_Policy(Policy):
+    def __init__(self, mdp):
+        self.states  = mdp.states;
+        self.actions = mdp.actions; 
+        self.theta   = np.array([0.0 for i in xrange()]);
+
+        
+    def pi(self, state, action):
+    
 
 def evaluate(policy1, policy2, mdp):
     sum1 = 0
